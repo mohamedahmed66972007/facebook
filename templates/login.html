@@ -42,7 +42,7 @@
       border: 1px solid #dddfe2;
       border-radius: 6px;
       font-size: 16px;
-      letter-spacing: normal; /* ضبط تباعد الحروف */
+      letter-spacing: normal;
       font-family: inherit;
     }
 
@@ -90,7 +90,6 @@
       color: #aaa;
     }
 
-    /* ميديا كويري للموبايلات الصغيرة */
     @media (max-width: 480px) {
       .container {
         padding: 20px 15px;
@@ -108,45 +107,46 @@
       }
     }
 
-    /* إعدادات خاصّة لعرض رمز العين */
     .password-container {
       position: relative;
-      direction: rtl; /* مهم لتموضع الأيقونة على الشمال في صفحة RTL */
+      direction: rtl;
     }
 
     .toggle-password {
       position: absolute;
       top: 50%;
-      left: 10px; /* هنا العين على الشمال */
+      left: 10px;
       transform: translateY(-50%);
       cursor: pointer;
       width: 24px;
       height: 24px;
-      fill: #1877f2;
+      fill: #666; /* لون رمادي للعين */
       user-select: none;
       transition: all 0.3s ease;
     }
 
-    /* بدون خلفية أو حدود عند الضغط */
-    .toggle-password:focus {
-      outline: none;
-      box-shadow: none;
-      background: none;
-    }
-
-    /* تأثير الخط المائل عند إخفاء الباسورد */
-    .toggle-password.crossed path.line1,
-    .toggle-password.crossed path.line2 {
-      stroke-dasharray: 40;
+    /* الخط المائل */
+    .toggle-password.crossed path.strike {
+      stroke: #ccc; /* رمادي فاتح */
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 20;
       stroke-dashoffset: 0;
       animation: strikeLine 0.3s forwards;
-      stroke: #1877f2;
+    }
+
+    .toggle-password path.strike {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 20;
       stroke-width: 2;
+      stroke-linecap: round;
+      stroke: transparent;
+      transition: stroke 0.3s ease;
     }
 
     @keyframes strikeLine {
       from {
-        stroke-dashoffset: 40;
+        stroke-dashoffset: 20;
       }
       to {
         stroke-dashoffset: 0;
@@ -180,7 +180,6 @@
           style="padding-left: 40px;"
         />
 
-        <!-- رمز العين (مستوحى من أيقونة فيسبوك) -->
         <svg
           class="toggle-password crossed"
           id="togglePassword"
@@ -195,29 +194,20 @@
           <path
             d="M1.5 12c2.5-5 7.5-7.5 10.5-7.5S19.5 7 22 12c-2.5 5-7.5 7.5-10.5 7.5S1.5 17 1.5 12z"
             fill="none"
-            stroke="#1877f2"
+            stroke="#666"
             stroke-width="2"
           />
           <!-- حدقة العين -->
-          <circle cx="12" cy="12" r="3" fill="#1877f2" />
-          <!-- خط يقطع العين -->
+          <circle cx="12" cy="12" r="3" fill="#666" />
+          <!-- الخط المائل -->
           <path
-            class="line1"
-            d="M4 4l16 16"
-            stroke="#1877f2"
+            class="strike"
+            d="M4 20L20 4"
+            stroke="#ccc"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-dasharray="40"
-            stroke-dashoffset="40"
-          />
-          <path
-            class="line2"
-            d="M20 4L4 20"
-            stroke="#1877f2"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-dasharray="40"
-            stroke-dashoffset="40"
+            stroke-dasharray="20"
+            stroke-dashoffset="20"
           />
         </svg>
       </div>
@@ -250,7 +240,7 @@
       }
     });
 
-    // لمنع ظهور خلفية زرقاء عند النقر أو التركيز (focus)
+    // منع ظهور إطار أزرق عند الضغط
     togglePassword.addEventListener("mousedown", (e) => e.preventDefault());
   </script>
 </body>
