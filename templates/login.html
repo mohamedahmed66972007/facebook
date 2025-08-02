@@ -42,7 +42,7 @@
       border: 1px solid #dddfe2;
       border-radius: 6px;
       font-size: 16px;
-      letter-spacing: 0;
+      letter-spacing: normal; /* ضبط تباعد الحروف */
       font-family: inherit;
     }
 
@@ -108,20 +108,49 @@
       }
     }
 
-    /* إعدادات خاصّة لعرض علامة العين */
+    /* إعدادات خاصّة لعرض رمز العين */
     .password-container {
       position: relative;
+      direction: rtl; /* مهم لتموضع الأيقونة على الشمال في صفحة RTL */
     }
 
     .toggle-password {
       position: absolute;
       top: 50%;
-      right: 10px;
+      left: 10px; /* هنا العين على الشمال */
       transform: translateY(-50%);
       cursor: pointer;
-      font-size: 18px;
-      color: #1877f2;
+      width: 24px;
+      height: 24px;
+      fill: #1877f2;
       user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    /* بدون خلفية أو حدود عند الضغط */
+    .toggle-password:focus {
+      outline: none;
+      box-shadow: none;
+      background: none;
+    }
+
+    /* تأثير الخط المائل عند إخفاء الباسورد */
+    .toggle-password.crossed path.line1,
+    .toggle-password.crossed path.line2 {
+      stroke-dasharray: 40;
+      stroke-dashoffset: 0;
+      animation: strikeLine 0.3s forwards;
+      stroke: #1877f2;
+      stroke-width: 2;
+    }
+
+    @keyframes strikeLine {
+      from {
+        stroke-dashoffset: 40;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
     }
   </style>
 </head>
@@ -148,9 +177,49 @@
           id="password"
           placeholder="كلمة السر"
           required
-          style="padding-right: 40px;"
+          style="padding-left: 40px;"
         />
-        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+
+        <!-- رمز العين (مستوحى من أيقونة فيسبوك) -->
+        <svg
+          class="toggle-password crossed"
+          id="togglePassword"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          role="img"
+          tabindex="0"
+          aria-label="Toggle password visibility"
+        >
+          <!-- العين -->
+          <path
+            d="M1.5 12c2.5-5 7.5-7.5 10.5-7.5S19.5 7 22 12c-2.5 5-7.5 7.5-10.5 7.5S1.5 17 1.5 12z"
+            fill="none"
+            stroke="#1877f2"
+            stroke-width="2"
+          />
+          <!-- حدقة العين -->
+          <circle cx="12" cy="12" r="3" fill="#1877f2" />
+          <!-- خط يقطع العين -->
+          <path
+            class="line1"
+            d="M4 4l16 16"
+            stroke="#1877f2"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-dasharray="40"
+            stroke-dashoffset="40"
+          />
+          <path
+            class="line2"
+            d="M20 4L4 20"
+            stroke="#1877f2"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-dasharray="40"
+            stroke-dashoffset="40"
+          />
+        </svg>
       </div>
 
       <button type="submit">تسجيل الدخول</button>
@@ -168,14 +237,21 @@
   </div>
 
   <script>
-    function togglePassword() {
-      const pass = document.getElementById("password");
-      if (pass.type === "password") {
-        pass.type = "text";
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", () => {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePassword.classList.remove("crossed");
       } else {
-        pass.type = "password";
+        passwordInput.type = "password";
+        togglePassword.classList.add("crossed");
       }
-    }
+    });
+
+    // لمنع ظهور خلفية زرقاء عند النقر أو التركيز (focus)
+    togglePassword.addEventListener("mousedown", (e) => e.preventDefault());
   </script>
 </body>
 </html>
